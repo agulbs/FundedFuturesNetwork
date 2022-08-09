@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RequestsService } from '../../services/requests.service';
+import { RequestsService } from '../../../services/requests.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -27,7 +27,7 @@ export class SignupComponent implements OnInit {
     console.log(this.user);
 
     this._requests.postRequest("signup", this.user).subscribe(res => {
-      if (res['staus'] == 200) {
+      if (res['status'] == 200) {
         this.router.navigateByUrl("/login");
       }
       console.log(res)

@@ -36,15 +36,15 @@ def signup():
 def login():
     data = request.get_json(force=True)
 
-    sql = "SELECT * FROM INTO FundedFuturesNetwork.Users WHERE Username=%s and Password=%s"
-    db = DB()
-    with db:
-        user = db.query(sql, data)
-        pprint(user)
-        if query == 1:
-            return jsonify({'message': "Signup successful", 'status': 200})
+    sql = "SELECT * FROM FundedFuturesNetwork.Users WHERE Username=%s and Password=%s"
 
-    return jsonify({'message': query, 'status': 400})
+    with DB() as db:
+        user = db.query(sql, data)
+
+        if len(user) > 0:
+            return jsonify({'message': "login", 'status': 200})
+
+    return jsonify({'message': "Wrong username or password", 'status': 400})
 
 if __name__ == "__main__":
    app.run(debug=True)

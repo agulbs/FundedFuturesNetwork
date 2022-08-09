@@ -6,10 +6,18 @@ import pymysql
 
 class DB():
     def __init__(self):
+        # self.db_local = {
+        #     'host': "localhost",
+        #     'user': "agulbs",
+        #     'password': "agulbs",
+        #     'database': "FundedFuturesNetwork",
+        #     'cursorclass':  pymysql.cursors.DictCursor
+        # }
+
         self.db_local = {
-            'host': "localhost",
+            'host': "192.168.1.22",
             'user': "agulbs",
-            'password': "agulbs",
+            'password': "alek07652",
             'database': "FundedFuturesNetwork",
             'cursorclass':  pymysql.cursors.DictCursor
         }
@@ -31,9 +39,8 @@ class DB():
 
     def query(self, qry, params):
         try:
-            self.cursor.execute(query, list(params.values()))
+            self.cursor.execute(qry, list(params.values()))
             res = self.cursor.fetchall()
-            self.conn.close()
         except Exception as e:
             return str(e)
 
