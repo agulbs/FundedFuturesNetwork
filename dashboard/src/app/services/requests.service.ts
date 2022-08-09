@@ -14,4 +14,8 @@ export class RequestsService {
   public postRequest(url, params) {
     return this.http.post(this.url + url, params);
   }
+
+  public getRequest(url) {
+    return this.http.get(this.url + url);
+  }
 }

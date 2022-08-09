@@ -8,7 +8,10 @@ import { LoginComponent } from './components/homepage/login/login.component';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ReportingComponent } from './components/dashboard/reporting/reporting.component';
+
 import { BillingComponent } from './components/dashboard/billing/billing.component';
+import { MembershipComponent } from './components/dashboard/billing/membership/membership.component';
+
 import { InvoiceComponent } from './components/dashboard/invoice/invoice.component';
 import { ProfileComponent } from './components/dashboard/profile/profile.component';
 
@@ -22,8 +25,8 @@ const routes: Routes = [
   },
   {
     path: "dashboard", component: DashboardComponent, children: [
-      { path: "", component: ReportingComponent, },
-      { path: "billing", component: BillingComponent, },
+      { path: "", component: ReportingComponent },
+      { path: "billing", component: BillingComponent },
       { path: "invoice", component: InvoiceComponent, },
       { path: "profile", component: ProfileComponent, },
     ]

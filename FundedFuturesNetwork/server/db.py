@@ -6,20 +6,12 @@ import pymysql
 
 class DB():
     def __init__(self):
-        # self.db_local = {
-        #     'host': "localhost",
-        #     'user': "agulbs",
-        #     'password': "agulbs",
-        #     'database': "FundedFuturesNetwork",
-        #     'cursorclass':  pymysql.cursors.DictCursor
-        # }
-
         self.db_local = {
-            'host': "192.168.1.22",
-            'user': "agulbs",
-            'password': "alek07652",
-            'database': "FundedFuturesNetwork",
-            'cursorclass':  pymysql.cursors.DictCursor
+            'host': "47.16.165.232",
+			'user': "agulbs",
+			'password': "alek07652",
+			'db': "FundedFuturesNetwork",
+			'cursorclass': pymysql.cursors.DictCursor
         }
         self.conn = None
         self.cursor = None

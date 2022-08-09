@@ -1,0 +1,36 @@
+<div class="row row-cols-1 row-cols-12 mb-3 text-center container justify-content-center m-auto">
+  <div class="col">
+    <div class="card mb-4 rounded-3 shadow-sm">
+      <div class="card-header py-3 d-flex justify-content-nstart">
+        <h4 class="my-0 fw-normal">My Memberships</h4>
+      </div>
+      <div class="card-body" *ngIf="user['tier'] == 0">
+        <h1 class="card-title pricing-card-title">No Membership Selected</h1>
+        <ul class="list-unstyled mt-3 mb-4">
+          <li>Please purchase a membership</li>
+        </ul>
+      </div>
+      <div class="card-body" *ngIf="user['tier'] != 0">
+        <h1 class="card-title pricing-card-title">{{user['friendly']}}</h1>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Tier</th>
+              <th scope="col">Equity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Purchased</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let membership of memberships">
+              <td>{{membership['tier']}}</td>
+              <td>{{membership['friendly']}}</td>
+              <td>{{membership['price']}}</td>
+              <td>{{membership['systemDate'] | date}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

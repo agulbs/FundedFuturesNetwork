@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RequestsService } from '../../../services/requests.service';
 import { Router } from '@angular/router';
+import { GooglePlaceDirective } from "ngx-google-places-autocomplete";
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 
 @Component({
   selector: 'app-signup',
@@ -9,18 +11,47 @@ import { Router } from '@angular/router';
 })
 
 export class SignupComponent implements OnInit {
+  // @ViewChild("placesRef") placesRef: GooglePlaceDirective;
+
   public user = {
     firstName: "",
     lastName: "",
     address: "",
+    city: "",
+    state: "",
+    country: "",
+    postal: "",
     phone: "",
     email: "",
     password: "",
+    username: "",
   }
 
   constructor(private _requests: RequestsService, private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  public handleAddressChange(address) {
+    this.user.address = address.formatted_address;
+    for (var a of address.address_components) {
+      console.log(a)
+      if (a.types.includes("locality")) {
+        this.user.city = a.long_name
+      }
+
+      if (a.types.includes("administrative_area_level_1")) {
+        this.user.state = a.short_name
+      }
+
+      if (a.types.includes("country")) {
+        this.user.country = a.short_name
+      }
+
+      if (a.types.includes("postal_code")) {
+        this.user.postal = a.long_name
+      }
+    }
   }
 
   public signup() {

@@ -5,6 +5,9 @@ import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+
+
 import { PricingComponent } from './components/homepage/pricing/pricing.component';
 import { SignupComponent } from './components/homepage/signup/signup.component';
 import { LoginComponent } from './components/homepage/login/login.component';
@@ -16,6 +19,8 @@ import { BillingComponent } from './components/dashboard/billing/billing.compone
 import { InvoiceComponent } from './components/dashboard/invoice/invoice.component';
 import { ProfileComponent } from './components/dashboard/profile/profile.component';
 import { ReportingComponent } from './components/dashboard/reporting/reporting.component';
+import { MembershipComponent } from './components/dashboard/billing/membership/membership.component';
+import { PurchasePlanComponent } from './components/dashboard/billing/purchase-plan/purchase-plan.component';
 
 
 @NgModule({
@@ -32,6 +37,8 @@ import { ReportingComponent } from './components/dashboard/reporting/reporting.c
     InvoiceComponent,
     ProfileComponent,
     ReportingComponent,
+    MembershipComponent,
+    PurchasePlanComponent,
 
   ],
   imports: [
@@ -39,6 +46,7 @@ import { ReportingComponent } from './components/dashboard/reporting/reporting.c
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    GooglePlaceModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
