@@ -9,24 +9,38 @@ import { StateService } from '../../../services/state.service';
 })
 export class ReportingComponent implements OnInit {
   public user = {};
+  public accountBalance = {
+    balance: 0,
+    pnl: 0,
+    threshold: 0,
+  }
 
   constructor(private _requests: RequestsService, private _state: StateService) {
     this._state.userBehavoirSubject.subscribe(res => {
       if ('tier' in res) {
         this.user = res
+        this.getAccountBalance();
       }
     })
   }
 
   ngOnInit(): void {
-    // console.log(this._state.user)
-    // this._requests.postRequest("reporting", { user: this._state.user['username'] }).subscribe(res => {
-    //   if (res['status'] == 200) {
-    //     this._state.setUser(res['message']);
-    //     console.log(this._state.user)
-    //   }
-    // })
+  }
 
+  public getAccountBalance() {
+    const params = { 'acct': this.user['ffn'] };
+    this._requests.customPost("https://fundedfuturesnetwork.com/ftp/", params).subscribe(res => {
+      const accountBalance = Number(res['Account Balance']);
+      const cashOnHand = Number(res['Cash On Hand (Previous EOD)']);
+      const threshold = Number(res["Auto Liquidate Threshold Value"]);
+
+      this.accountBalance.balance = accountBalance;
+      this.accountBalance.pnl = accountBalance - cashOnHand;
+      this.accountBalance.threshold = threshold;
+
+
+      console.log(res)
+    })
   }
 
 }

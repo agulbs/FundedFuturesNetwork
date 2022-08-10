@@ -14,7 +14,7 @@ def signup():
 	pprint(data)
 
 	sql = """
-	INSERT INTO FundedFuturesNetwork.Users (address, city, country, email, first, last, password, phone, postal, state, username)
+	INSERT INTO FundedFuturesNetwork.Users (first, last, address, city, state, country, postal, phone, email, password, username)
 	VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
 	"""
 	with app.db() as db:
@@ -59,6 +59,7 @@ def user():
 		U.address,
 		U.phone,
 		U.email,
+		U.ffn,
 		S.tier,
 		T.equity,
 		T.friendly,
@@ -105,8 +106,10 @@ def user_pucrchase_tier():
 	data = request.get_json(force=True)
 	sql = "INSERT INTO FundedFuturesNetwork.Subscriptions (username, tier) VALUES (%s, %s)"
 
+	crud.add_account(data)
+
 	with app.db() as db:
-		tier = db.commit(sql, data)
+		tier = db.commit(sql, {'username': data['username'], 'tier': data['tier']})
 		if tier == 1:
 			return jsonify({'message': "Purchased tier", 'status': 200})
 

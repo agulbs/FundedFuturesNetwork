@@ -18,4 +18,8 @@ export class RequestsService {
   public getRequest(url) {
     return this.http.get(this.url + url);
   }
+
+  public customPost(url, params) {
+    return this.http.post(url, params);
+  }
 }

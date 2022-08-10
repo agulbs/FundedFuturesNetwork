@@ -22,10 +22,13 @@ export class PurchasePlanComponent implements OnInit {
   }
 
   public purchase(tier) {
-    console.log(this._state.user)
     const params = {
       user: this._state.user['username'],
-      tier: tier['id']
+      username: this._state.user['username'],
+      cash: tier['equity'],
+      ffn: this._state.user['ffn'],
+      tier: tier['id'],
+      reset: this._state.user['ffn'] != null,
     }
 
     this._requests.postRequest("user/purchase-membership", params).subscribe(res => {
@@ -34,8 +37,6 @@ export class PurchasePlanComponent implements OnInit {
         this._state.user['friendly'] = tier['friendly'];
         this._state.user['price'] = tier['price'];
         this._state.setUser(this._state.user);
-
-
       }
     })
   }

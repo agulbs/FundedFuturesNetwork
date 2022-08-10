@@ -5,3 +5,87 @@
     </div>
   </div>
 </div>
+<div class="container" *ngIf="user['tier'] != 0">
+  <div class="card mb-4 rounded-3 shadow-sm">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col-6 m-auto">
+          <h5 class="my-0 fw-normal">{{user['ffn']}}</h5>
+        </div>
+        <div class="col-6 d-flex m-auto justify-content-end">
+          <button type="button" class="btn  btn-outline-danger">Reset Account</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="conatiner-fluid">
+        <div class="card mb-2 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h6>Account Balance</h6>
+          </div>
+          <div class="card-body">
+            <div class="row row-bordered">
+              <div class="col-6 d-flex justify-content-start">Account Balance</div>
+              <div class="col-6 d-flex justify-content-end">
+                {{accountBalance.balance | currency}}
+              </div>
+            </div>
+            <div class="row row-bordered">
+              <div class="col-6 d-flex justify-content-start">Daily P&L</div>
+              <div class="col-6 d-flex justify-content-end">{{ accountBalance.pnl | currency}}</div>
+            </div>
+            <div class="row row-bordered">
+              <div class="col-6 d-flex justify-content-start">Liquidation Threshold</div>
+              <div class="col-6 d-flex justify-content-end">{{ accountBalance.threshold | currency }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="conatiner-fluid">
+        <div class="card mb-2 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h6>Account Balance</h6>
+          </div>
+          <div class="card-body">
+            <div class="row row-bordered">
+              <div class="col-6 d-flex justify-content-start">Targets</div>
+              <div class="col-6 d-flex justify-content-end">$100,000</div>
+            </div>
+            <div class="row row-bordered">
+              <div class="col-6 d-flex justify-content-start">Daily P&L</div>
+              <div class="col-6 d-flex justify-content-end">$100,000</div>
+            </div>
+            <div class="row row-bordered">
+              <div class="col-6 d-flex justify-content-start">Liquidation Threshold</div>
+              <div class="col-6 d-flex justify-content-end">$100,000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="conatiner-fluid">
+        <div class="card mb-2 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h6>Rules</h6>
+          </div>
+          <div class="card-body">
+            <div class="row row-bordered">
+              <div class="col-6 d-flex justify-content-start">Account Balance</div>
+              <div class="col-6 d-flex justify-content-end">$100,000</div>
+            </div>
+            <div class="row row-bordered">
+              <div class="col-6 d-flex justify-content-start">Daily P&L</div>
+              <div class="col-6 d-flex justify-content-end">$100,000</div>
+            </div>
+            <div class="row row-bordered">
+              <div class="col-6 d-flex justify-content-start">Liquidation Threshold</div>
+              <div class="col-6 d-flex justify-content-end">$100,000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
