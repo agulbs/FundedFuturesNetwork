@@ -1,96 +1,97 @@
 import paramiko
-
+from pprint import pprint
 
 def add_user(user):
+	pprint(user)
 	fields = {
-		"command": "add_user",
-		"user_type": "Trader",
-		"ib_id": "FundedFuturesNetwork",
-		"user_id": user['username'],
-		"first_name": user['firstName'],
-		"last_name": user['lastName'],
-		"password": user['password'],
-		"email": user['email'],
-		"user_max_count": "2",
-		"login_exp": "",
-		"life_span": "",
-		"trading_status": "Enabled",
-		"nlx_user_id": "",
-		"cme_user_id": "cme",
-		"ice user id": "",
-		"dme user id": "",
-		"read only": "",
-		"ullink user id": "",
-		"pulse order limit": "",
-		"cboe user id": "",
-		"cbsx user id": "",
-		"cfe user id": "",
-		"ic user id": "",
-		"risk read only": "",
-		"rithmic user type": "",
-		"ice-otc user id": "",
-		"nybot user id": "",
-		"wce user id": "",
-		"authorized ice user": "",
-		"authorized ice otc": "",
-		"authorized nybot": "",
-		"authorized wce user": "",
-		"address": user['address'].split(',')[0],
-		"address2": "",
-		"city": user['city'],
-		"country": user['country'],
-		"state": user['state'],
-		"postal": user['postal'],
-		"Home Phone": "",
-		"Work Phone": "",
-		"Mobile Phone": "",
-		"Fax": "",
-		"Billing Code": "",
-		"TDEX User Id": "",
-		"Associated User": "",
-		"EUREX User": "",
-		"Prior Market Data": "",
-		"Prior Market Data": "",
-		"Pre-Trade": "",
-		"Password": "",
-		"Demo User Valid": "",
-		"LIFFE User Id": "",
-		"LIFFE Authorized": "",
-		"ICE": "",
-		"MEFF Client Id Short": "",
-		"MEFF Investment": "",
-		"MEFF Execution": "",
-		"MEFF Trading": "",
-		"MATIF Trading": "",
-		"MATIF NonExecuting Broker": "",
-		"MATIF Investment": "",
-		"MATIF Execution": "",
-		"MATIF Client Id Short": "",
-		"AEX Trading Capacity": "",
-		"AEX Non-Executing": "",
-		"AEX Investment": "",
-		"AEX Execution": "",
-		"AEX Client Id Short": "",
-		"EUREX Client Id": "",
-		"EUREX Investment": "",
-		"EUREX Execution": "",
-		"Disable Add Accounts Only": "",
-		"Disable Add User Only": "",
-		"Disable Assign Only": "",
-		"Disable Edit Markets Only": "",
-		"Disable Edit Cash Only": "",
-		"Disable Edit Risk Only": "",
-		"Liquidating Only Cap ": "",
-		"SMFE Subscriber Token": "",
-		"SMFE User ID": "",
-		"MaxSessionCountORders": "10",
-		"idk": "",
-		"MaxSessionCountMD": "1",
-		"Gain": "",
-		"Go Live": ""
+		"command": "add_user", # 1
+		"user_type": "Trader", # 2
+		"ib_id": "FundedFuturesNetwork", # 3
+		"user_id": user['username'], # 4
+		"first_name": user['firstName'], # 5
+		"last_name": user['lastName'], # 6
+		"password": user['password'], # 7
+		"email": user['email'], # 8
+		"user_max_count": "2", # 9
+		"login_exp": "", # 10
+		"life_span": "", # 11
+		"trading_status": "Enabled", # 12
+		"nlx_user_id": "", # 13
+		"cme_user_id": "CME", # 14
+		"ice user id": "", # 15 1
+		"dme user id": "", # 16
+		"read only": "", # 17
+		"ullink user id": "", # 18
+		"pulse order limit": "", # 19
+		"cboe user id": "", # 20
+		"cbsx user id": "", # 21
+		"cfe user id": "", # 22
+		"ic user id": "", # 23
+		"risk read only": "", # 24
+		"rithmic user type": "", # 25
+		"ice-otc user id": "", # 26
+		"nybot user id": "", # 27
+		"wce user id": "", # 28
+		"authorized ice user": "", # 29
+		"authorized ice otc": "", # 30
+		"authorized nybot": "", # 31
+		"authorized wce user": "", # 32
+		"address": user['address'].split(',')[0], # 33
+		"address2": "", # 34
+		"city": user['city'], # 35
+		"country": user['country'], # 36
+		"state": user['state'], # 37
+		"postal": user['postal'], # 38
+		"Home Phone": "", # 39
+		"Work Phone": "", # 40
+		"Mobile Phone": "", # 41
+		"Fax": "", # 42
+		"Billing Code": "", # 43
+		"TDEX User Id": "", # 44
+		"Associated User": "", # 45
+		"EUREX User": "", # 46
+		"Prior Market Data": "", # 47
+		"Prior Market Data": "", # 48
+		"Pre-Trade": "", # 49
+		"Password": "", # 50
+		"Demo User Valid": "", # 51
+		"LIFFE User Id": "", # 52
+		"LIFFE Authorized": "", # 53
+		"ICE": "", # 54
+		"MEFF Client Id Short": "", # 55
+		"MEFF Investment": "", # 56
+		"MEFF Execution": "", # 57
+		"MEFF Trading": "", # 58
+		"MATIF Trading": "", # 59
+		"MATIF NonExecuting Broker": "", # 60
+		"MATIF Investment": "", # 61
+		"MATIF Execution": "", # 62
+		"MATIF Client Id Short": "", # 63
+		"AEX Trading Capacity": "", # 64
+		"AEX Non-Executing": "", # 65
+		"AEX Investment": "", # 66
+		"AEX Execution": "", # 67
+		"AEX Client Id Short": "", # 68
+		"EUREX Client Id": "", # 69
+		"EUREX Investment": "", #  70
+		"EUREX Execution": "", # 71
+		"Disable Add Accounts Only": "", # 72
+		"Disable Add User Only": "", # 73
+		"Disable Assign Only": "", # 74
+		"Disable Edit Markets Only": "", # 75
+		"Disable Edit Cash Only": "", # 76
+		"Disable Edit Risk Only": "", # 77
+		"Liquidating Only Cap ": "", # 78
+		"SMFE Subscriber Token": "", # 79
+		"SMFE User ID": "", # 80
+		"?????": "",
+		"MaxSessionCountORders": "10", # 81
+		"MaxSessionCountMD": "1", # 82
+		"Gain": "", #  83
+		"Go Live": "" # 84
 	}
 
-	filename = f"{user['username']}-add_user.csv"
+	filename = f"{user['username']}AddUser.csv"
 	with open(filename, "w") as f:
 		f.write(','.join(fields.values()))
 

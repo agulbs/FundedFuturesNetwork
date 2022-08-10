@@ -11,6 +11,7 @@ user_bp = Blueprint("user_bp", __name__)
 @user_bp.route("/signup", methods=["POST"])
 def signup():
 	data = request.get_json(force=True)
+	pprint(data)
 
 	sql = """
 	INSERT INTO FundedFuturesNetwork.Users (address, city, country, email, first, last, password, phone, postal, state, username)
@@ -32,6 +33,7 @@ def signup():
 @user_bp.route("/login", methods=["POST"])
 def login():
 	data = request.get_json(force=True)
+	print(data)
 
 	sql = "SELECT * FROM FundedFuturesNetwork.Users WHERE username=%s and password=%s"
 

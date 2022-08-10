@@ -13,6 +13,8 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 export class SignupComponent implements OnInit {
   // @ViewChild("placesRef") placesRef: GooglePlaceDirective;
 
+  private countries = { 'US': "USA", 'CA': "Canada" }
+
   public user = {
     firstName: "",
     lastName: "",
@@ -33,6 +35,7 @@ export class SignupComponent implements OnInit {
   }
 
   public handleAddressChange(address) {
+    console.log(address)
     this.user.address = address.formatted_address;
     for (var a of address.address_components) {
       console.log(a)
@@ -41,7 +44,7 @@ export class SignupComponent implements OnInit {
       }
 
       if (a.types.includes("administrative_area_level_1")) {
-        this.user.state = a.short_name
+        this.user.state = a.long_name
       }
 
       if (a.types.includes("country")) {
@@ -51,6 +54,13 @@ export class SignupComponent implements OnInit {
       if (a.types.includes("postal_code")) {
         this.user.postal = a.long_name
       }
+    }
+
+    if (this.user.country in this.countries) {
+      this.user.country = this.countries[this.user.country]
+    } else {
+      this.user.state = "";
+
     }
   }
 
