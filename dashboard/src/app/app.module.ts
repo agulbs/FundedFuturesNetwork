@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { StripeModule } from "stripe-angular"
+
 
 
 import { PricingComponent } from './components/homepage/pricing/pricing.component';
@@ -47,6 +49,7 @@ import { PurchasePlanComponent } from './components/dashboard/billing/purchase-p
     FormsModule,
     HttpClientModule,
     GooglePlaceModule,
+    StripeModule.forRoot("pk_test_51LVNKPKSvK2NDY9DlJ0Rk1sHelqPhWFoufs4oiglsVANLWDoDk7AaFsunqsLoGpm1kIof6Z61UPTUtxqrPSliU8w00Elkoisnb")
   ],
   providers: [],
   bootstrap: [AppComponent]

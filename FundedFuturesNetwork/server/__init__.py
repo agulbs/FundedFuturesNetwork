@@ -10,8 +10,10 @@ def create_app():
         app.db = DB
         from server.user.user import user_bp
         from server.tiers.tiers import tiers_bp
+        from server.checkout.checkout import checkout_bp
 
         app.register_blueprint(user_bp)
         app.register_blueprint(tiers_bp)
+        app.register_blueprint(checkout_bp)
 
         return app

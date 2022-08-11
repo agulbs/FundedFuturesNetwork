@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestsService } from '../../../../services/requests.service'
 import { StateService } from '../../../../services/state.service'
+import { PaymentService } from '../../../../services/payment.service'
 import { Router } from '@angular/router';
+import { Stripe } from "stripe-angular"
+
 
 @Component({
   selector: 'app-purchase-plan',
@@ -10,16 +13,80 @@ import { Router } from '@angular/router';
 })
 export class PurchasePlanComponent implements OnInit {
   public tiers = [];
+  public selectedTier = {};
 
-  constructor(private _requests: RequestsService, private _state: StateService, private router: Router) { }
+  public stripe;
+  public card;
+
+  constructor(
+    private _requests: RequestsService,
+    private _state: StateService,
+    private _payment: PaymentService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.configureStripe();
+
     this._requests.getRequest("tiers").subscribe(res => {
       if (res['status'] == 200) {
+        res['message'].forEach(tier => {
+          tier['description'] = tier['description'].split('~')
+        })
         this.tiers = res['message']
       }
     })
+
   }
+
+  public configureStripe() {
+    const style = {
+      base: {
+        color: '#32325d',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4'
+        }
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+      }
+    };
+
+    this.stripe = Stripe('pk_test_51LVNKPKSvK2NDY9DlJ0Rk1sHelqPhWFoufs4oiglsVANLWDoDk7AaFsunqsLoGpm1kIof6Z61UPTUtxqrPSliU8w00Elkoisnb');
+    console.log(this.stripe)
+    const elements = this.stripe.elements();
+    this.card = elements.create('card', { style: style });
+    this.card.mount('#card-element');
+
+    this.card.addEventListener('change', (event) => {
+      if (event.error) {
+        console.log(event.error)
+      } else {
+      }
+    });
+
+  }
+
+  public createToken() {
+
+    this.stripe.createToken(this.card).then((result) => {
+      console.log(result)
+      if (result.error) {
+
+      } else {
+        result['user'] = this._state.user;
+        result['purchase'] = this.selectedTier
+        this._requests.postRequest("checkout", result).subscribe(res => {
+          console.log(res)
+        })
+      }
+    });
+  };
+
 
   public purchase(tier) {
     const params = {
