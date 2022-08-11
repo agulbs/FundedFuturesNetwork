@@ -1,127 +1,79 @@
 <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
   <h1 class="display-4 fw-normal">Funded Futures Network</h1>
-  <p class="fs-5 text-muted">What we do</p>
+  <p class="fs-4 text-muted">We fund futures traders</p>
+  <p class="fs-5 text-muted">Pass the evaluation & trade our capital</p>
 </div>
 
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+  <h2 class="display-4 fw-normal">Select Your Package</h2>
+</div>
 <div class="row row-cols-1 row-cols-md-3 mb-3 text-center container justify-content-center m-auto">
-  <div class="col">
+  <div class="col" *ngFor="let tier of tiers">
     <div class="card mb-4 rounded-3 shadow-sm">
       <div class="card-header py-3">
-        <h4 class="my-0 fw-normal">Free</h4>
+        <h4 class="my-0 fw-normal">{{tier['friendly']}}</h4>
       </div>
       <div class="card-body">
-        <h1 class="card-title pricing-card-title">$0<small class="text-muted fw-light">/mo</small></h1>
+        <h1 class="card-title pricing-card-title"><small class="text-muted fw-light"></small></h1>
         <ul class="list-unstyled mt-3 mb-4">
-          <li>10 users included</li>
-          <li>2 GB of storage</li>
-          <li>Email support</li>
-          <li>Help center access</li>
+          <li class="mt-2">{{tier['dailyDrawdown']}}</li>
+          <li class="mt-2">{{tier['trailingMax']}}</li>
+          <li class="mt-2">{{tier['contractMax']}}</li>
         </ul>
-        <button type="button" class="w-100 btn btn-lg btn-outline-primary">Sign up for free</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card mb-4 rounded-3 shadow-sm">
-      <div class="card-header py-3">
-        <h4 class="my-0 fw-normal">Pro</h4>
-      </div>
-      <div class="card-body">
-        <h1 class="card-title pricing-card-title">$15<small class="text-muted fw-light">/mo</small></h1>
-        <ul class="list-unstyled mt-3 mb-4">
-          <li>20 users included</li>
-          <li>10 GB of storage</li>
-          <li>Priority email support</li>
-          <li>Help center access</li>
-        </ul>
-        <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card mb-4 rounded-3 shadow-sm border-primary">
-      <div class="card-header py-3 text-bg-primary border-primary">
-        <h4 class="my-0 fw-normal">Enterprise</h4>
-      </div>
-      <div class="card-body">
-        <h1 class="card-title pricing-card-title">$29<small class="text-muted fw-light">/mo</small></h1>
-        <ul class="list-unstyled mt-3 mb-4">
-          <li>30 users included</li>
-          <li>15 GB of storage</li>
-          <li>Phone and email support</li>
-          <li>Help center access</li>
-        </ul>
-        <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
+        <button type="button" class="w-100 mb-4 btn btn-md btn-outline-primary" routerLink="/sign-up">Standard Package: {{tier['standardPrice'] | currency}}/mo</button>
+        <button type="button" class="w-100 btn btn-md btn-outline-success" routerLink="/sign-up">Express Package: {{tier['expressPrice'] | currency }}/mo</button>
       </div>
     </div>
   </div>
 </div>
 
-<h2 class="display-6 text-center mb-4">Compare plans</h2>
+<div class="container-fluid bg-dark pt-3 pb-3 border-bottom border-top video-section">
+  <div class="long-pricing-header p-3 pb-md-4 mx-auto text-center">
+    <h2 class="display-4 fw-normal">We work hard to ensure that you become a consistent trader</h2>
+    <p class="fs-6 text-muted">FFN’s founders are real traders, so we fully understand the frustrations that traders can encounter on a day to day basis. This is why we have created a system designed to help you focus on what is most important as a
+      trader…</p>
+    <p class="fs-5">THE PROCESS!</p>
+  </div>
 
-<div class="table-responsive container">
-  <table class="table text-center">
-    <thead>
-      <tr>
-        <th style="width: 34%;"></th>
-        <th style="width: 22%;">Free</th>
-        <th style="width: 22%;">Pro</th>
-        <th style="width: 22%;">Enterprise</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row" class="text-start">Public</th>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-      </tr>
-      <tr>
-        <th scope="row" class="text-start">Private</th>
-        <td></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-      </tr>
-    </tbody>
+  <div class="row mb-3 text-center container justify-content-center m-auto">
+    <iframe width="1120" height="630" src="https://www.youtube.com/embed/QR7WlHYZ9h4" title="How To Get Your Account Funded As A Trader [up to 250k in trading equity]" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
 
-    <tbody>
-      <tr>
-        <th scope="row" class="text-start">Permissions</th>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-      </tr>
-      <tr>
-        <th scope="row" class="text-start">Sharing</th>
-        <td></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-      </tr>
-      <tr>
-        <th scope="row" class="text-start">Unlimited members</th>
-        <td></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-      </tr>
-      <tr>
-        <th scope="row" class="text-start">Extra security</th>
-        <td></td>
-        <td></td>
-        <td><svg class="bi" width="24" height="24">
-            <use xlink:href="#check" /></svg></td>
-      </tr>
-    </tbody>
-  </table>
+
+<div class="container-fluid pt-3 pb-3 border-top">
+  <div class="long-pricing-header p-3 pb-md-4 mx-auto text-center">
+    <h2 class="display-4 fw-normal">How it works</h2>
+  </div>
+  <div class="row mb-3 text-center container justify-content-center m-auto">
+    <ul class="list-unstyled mt-3 mb-4 text-start">
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>Choose Your account size</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>Pay the monthly subscription</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>Start your Evaluation Account</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>Reach your Profit Target without breaking any rules</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>If a rule is broken, you will have the option to restart a fresh evaluation for a 100$ reset fee.</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>Once your evaluation is complete and audited, you will move on to the Exhibition account.</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>Once you have completed the evaluation and your account has been audited you will receive your Exhibition account</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>Trade the "Exhibition" account while your "Funded-Pro" account is setup for live trading. (10-15 business days).</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>If a rule is broken during the "exhibition", you must return to the Evaluation account and restart.</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>You may transfer up to the pre-determined amount relative to your account size, from "exhibition" to "Funded-Pro".</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>Once in the Funded-Pro account, you must maintain the minimum threshold in your account before withdrawing</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>Withdrawals of (minimum) 1k+ can be made every Tuesday provided you are above the account threshold.</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>When a withdrawal is initiated, FFN will take 20%, and distribute the remaining 80% via PayPal, bank wire, or ACH.</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>There is no maximum withdrawal, as long as you remain above your account threshold.</li>
+      <li> <i aria-hidden="true" class="fas fa-chart-line"></i>Withdrawals are processed within 24 hours but may take up to 7 business days to reach your bank.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="container-fluid bg-dark pt-3 pb-3 border-bottom border-top video-section">
+  <div class="long-pricing-header p-3 pb-md-4 mx-auto text-center">
+    <h2 class="display-4 fw-normal">Why should I choose FFN?</h2>
+    <p class="fs-6 text-muted"></p>
+    <p class="fs-5">At FFN, we pride ourselves on being the most trader-focused remote prop firm in existence. FFN is a company created by real traders, with real experience, and a passion for running a shop that operates with honesty,
+      integrity, and transparency. FFN’s main goal is to bring as many funded traders on board as possible. Others in the funded trading space require overly restrictive stipulations that hinder trading,and trap traders in a frustrating cycle. FFN
+      puts the funding of consistent traders, and the education of aspiring funded traders of the future, at the forefront of the entire operation. FFN’s founders are made up of active traders and successful business owners, who know exactly what it
+      takes to succeed in trading, and most importantly, achieve consistency and longevity in the business of being an active trader.</p>
+  </div>
 </div>
