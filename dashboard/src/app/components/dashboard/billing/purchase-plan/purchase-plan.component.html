@@ -2,19 +2,17 @@
   <div class="col" *ngFor="let tier of tiers">
     <div class="card mb-4 rounded-3 shadow-sm">
       <div class="card-header py-3">
-        <h4 class="my-0 fw-normal">Tier {{tier['id']}}</h4>
+        <h4 class="my-0 fw-normal">{{tier['friendly']}}</h4>
       </div>
       <div class="card-body">
-        <h1 class="card-title pricing-card-title">{{tier['friendly']}}<small class="text-muted fw-light">/mo</small></h1>
+        <h1 class="card-title pricing-card-title"><small class="text-muted fw-light"></small></h1>
         <ul class="list-unstyled mt-3 mb-4">
-          <li>10 users included</li>
-          <li>2 GB of storage</li>
-          <li>Email support</li>
-          <li>Help center access</li>
+          <li class="mt-2">{{tier['dailyDrawdown']}}</li>
+          <li class="mt-2">{{tier['trailingMax']}}</li>
+          <li class="mt-2">{{tier['contractMax']}}</li>
         </ul>
-        <button type="button" class="w-100 mb-4 btn btn-lg btn-outline-primary" data-bs-toggle="modal" data-bs-target="#stripeModal" (click)="selectedTier=tier">Buy Standard Package</button>
-        <button type="button" class="w-100 btn btn-lg btn-outline-success" data-bs-toggle="modal" data-bs-target="#stripeModal" (click)="selectedTier=tier">Buy Express Package</button>
-        <!-- <button type="button" class="w-100 btn btn-lg btn-outline-primary" (click)="purchase(tier)">Purchase</button> -->
+        <button type="button" class="w-100 mb-4 btn btn-md btn-outline-primary" data-bs-toggle="modal" data-bs-target="#stripeModal" (click)="setSelectedTier(tier, 0)">Standard Package: {{tier['standardPrice'] | currency}}/mo</button>
+        <button type="button" class="w-100 btn btn-md btn-outline-success" data-bs-toggle="modal" data-bs-target="#stripeModal" (click)="setSelectedTier(tier, 1)">Express Package: {{tier['expressPrice'] | currency }}/mo</button>
       </div>
     </div>
   </div>
@@ -25,25 +23,67 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="stripeModalLabel">Tier {{selectedTier['id']}} - {{selectedTier['friendly']}}</h5>
+        <h5 class="modal-title" id="stripeModalLabel">{{selectedTier['friendly']}} {{selectedTier['package']}}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="row ">
           <div class="col-12 d-flex justify-content-center">
-            <h5>Plan Breakdown</h5>
+            <h5>Whats Included in my Package ?</h5>
           </div>
-          <div class="col-12 d-flex justify-content-center mt-3 mb-3" *ngFor="let descr of selectedTier['description']">
-            {{descr}}
+          <ul class="list-unstyled mt-3 mb-4">
+            <li class="mt-2">{{selectedTier['dailyDrawdown']}}</li>
+            <li class="mt-2">{{selectedTier['trailingMax']}}</li>
+            <li class="mt-2">{{selectedTier['contractMax']}}</li>
+            <li class="mt-2">{{selectedTier['status'] == 'S' ? selectedTier['standardDescription'] : selectedTier['expressDescription']}}</li>
+          </ul>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h6>Payment Info</h6>
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
+                  <input type="text" id="form3Example1m" class="form-control form-control-md" [(ngModel)]="user['first']" />
+                  <label class="form-label" for="form3Example1m">First name</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
+                  <input type="text" id="form3Example1n" class="form-control form-control-md" [(ngModel)]="user['last']" />
+                  <label class="form-label" for="form3Example1n">Last name</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input type="text" id="form3Example58" class="form-control form-control-md" [(ngModel)]="user['address']" />
+              <label class="form-label" for="form3Example58">Address</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input type="text" id="form3Example9" class="form-control form-control-md" [(ngModel)]="user['phone']" />
+              <label class="form-label" for="form3Example9">Phone Number</label>
+            </div>
+
+            <div class="form-outline mb-4">
+              <input type="text" id="form3Example90" class="form-control form-control-md" [(ngModel)]="user['email']" />
+              <label class="form-label" for="form3Example90">Email</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12" id="card-element"></div>
+            <div class="col-12" id="card-errors" role="alert"></div>
           </div>
         </div>
-        <div class="row col-12" id="card-element"></div>
-        <div class="row col-12" id="card-errors" role="alert"></div>
+
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="createToken()">Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="createToken()">Purchase</button>
       </div>
     </div>
   </div>

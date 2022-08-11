@@ -44,6 +44,8 @@ class DB():
             pprint(list(params.values()))
             self.cursor.execute(qry, list(params.values()))
             self.conn.commit()
+
+            print(self.cursor._last_executed)
         except Exception as e:
             return str(e)
 

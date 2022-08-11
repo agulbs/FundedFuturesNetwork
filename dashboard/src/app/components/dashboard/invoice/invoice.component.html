@@ -1,1 +1,20 @@
-<p>invoice works!</p>
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Invoice</th>
+        <th scope="col">Package</th>
+        <th scope="col">Total Billed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let invoice of invoices">
+        <td>{{invoice['systemDate'] | date}}</td>
+        <td><a target="_blank" href="{{invoice['receipt']}}">Invoice</a></td>
+        <td>{{invoice['package'] == 'E' ? "Express " : "Standard "}} Package: {{invoice['friendly']}}</td>
+        <td>{{ (invoice['package'] == 'E' ? invoice['expressPrice'] : invoice['standardPrice']) | currency}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

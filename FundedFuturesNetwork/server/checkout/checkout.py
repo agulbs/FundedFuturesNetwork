@@ -24,4 +24,18 @@ def checkout():
 		description="test tier 1"
 	)
 
+
+	with app.db() as db:
+		sql = "INSERT INTO FundedFuturesNetwork.Transactions (username, tier, price, package, receipt) VALUES (%s, %s, %s, %s, %s)"
+		params = {
+			'username': data['user']['username'],
+			'tier': data['purchase']['id'],
+			'price': data['purchase']['price'],
+			'package': data['purchase']['status'],
+			'receipt': charge['receipt_url']
+		}
+
+		db.commit(sql, params)
+
+	pprint(charge)
 	return jsonify({'message': charge, 'status': 200})

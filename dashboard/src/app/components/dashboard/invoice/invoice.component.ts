@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { RequestsService } from '../../../services/requests.service'
+import { StateService } from '../../../services/state.service'
 
 @Component({
   selector: 'app-invoice',
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InvoiceComponent implements OnInit {
 
-  constructor() { }
+  public invoices = []
 
-  ngOnInit(): void {
+  constructor(private _requests: RequestsService, private _state: StateService) {
+    this._state.userBehavoirSubject.subscribe(user => {
+      if (Object.keys(user).length > 0) {
+        this.getInvoices(user);
+      }
+    })
   }
 
+  ngOnInit(): void { }
+
+
+  public getInvoices(user) {
+    this._requests.postRequest("user/invoices", { 'username': user['username'] }).subscribe(res => {
+      if (res['status'] == 200) {
+        this.invoices = res['message'];
+        console.log(this.invoices)
+      }
+    })
+  }
 }

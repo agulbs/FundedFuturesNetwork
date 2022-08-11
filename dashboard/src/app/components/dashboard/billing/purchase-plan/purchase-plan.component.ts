@@ -4,6 +4,8 @@ import { StateService } from '../../../../services/state.service'
 import { PaymentService } from '../../../../services/payment.service'
 import { Router } from '@angular/router';
 import { Stripe } from "stripe-angular"
+import { GooglePlaceDirective } from "ngx-google-places-autocomplete";
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 
 
 @Component({
@@ -12,8 +14,10 @@ import { Stripe } from "stripe-angular"
   styleUrls: ['./purchase-plan.component.css']
 })
 export class PurchasePlanComponent implements OnInit {
+  private countries = { 'US': "USA", 'CA': "Canada" }
   public tiers = [];
   public selectedTier = {};
+  public user = {}
 
   public stripe;
   public card;
@@ -23,24 +27,73 @@ export class PurchasePlanComponent implements OnInit {
     private _state: StateService,
     private _payment: PaymentService,
     private router: Router
-  ) { }
+  ) {
+    this._state.userBehavoirSubject.subscribe(user => {
+      if (Object.keys(user).length > 0) {
+        this.user = user;
+        console.log(user)
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.configureStripe();
-
     this._requests.getRequest("tiers").subscribe(res => {
       if (res['status'] == 200) {
-        res['message'].forEach(tier => {
-          tier['description'] = tier['description'].split('~')
-        })
         this.tiers = res['message']
       }
     })
 
   }
 
+  public setSelectedTier(tier, plan) {
+    this.selectedTier = tier;
+    if (plan == 0) {
+      this.selectedTier['package'] = "Standard Package"
+      this.selectedTier['status'] = "S"
+      this.selectedTier['price'] = tier['standardPrice'];
+    } else {
+      this.selectedTier['package'] = "Express Package"
+      this.selectedTier['status'] = "E"
+      this.selectedTier['price'] = tier['expressPrice'];
+    }
+
+    this.user = {};
+    this.user = this._state.user;
+  }
+
+  public handleAddressChange(address) {
+    console.log(address)
+    this._state.user['address'] = address.formatted_address;
+    for (var a of address.address_components) {
+      console.log(a)
+      if (a.types.includes("locality")) {
+        this._state.user['city'] = a.long_name
+      }
+
+      if (a.types.includes("administrative_area_level_1")) {
+        this._state.user['state'] = a.long_name
+      }
+
+      if (a.types.includes("country")) {
+        this._state.user['country'] = a.short_name
+      }
+
+      if (a.types.includes("postal_code")) {
+        this._state.user['postal'] = a.long_name
+      }
+    }
+
+    if (this._state.user['country'] in this.countries) {
+      this._state.user['country'] = this.countries[this._state.user['country']]
+    } else {
+      this._state.user['state'] = "";
+    }
+  }
+
   public configureStripe() {
     const style = {
+      theme: "night",
       base: {
         color: '#32325d',
         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
@@ -48,13 +101,16 @@ export class PurchasePlanComponent implements OnInit {
         fontSize: '16px',
         '::placeholder': {
           color: '#aab7c4'
-        }
+        },
+        background: "red",
       },
       invalid: {
         color: '#fa755a',
         iconColor: '#fa755a'
       }
     };
+
+    const appearance = { theme: "night", labels: "floating" }
 
     this.stripe = Stripe('pk_test_51LVNKPKSvK2NDY9DlJ0Rk1sHelqPhWFoufs4oiglsVANLWDoDk7AaFsunqsLoGpm1kIof6Z61UPTUtxqrPSliU8w00Elkoisnb');
     console.log(this.stripe)
@@ -90,8 +146,7 @@ export class PurchasePlanComponent implements OnInit {
 
   public purchase(tier) {
     const params = {
-      user: this._state.user['username'],
-      username: this._state.user['username'],
+      user: this._state.user,
       cash: tier['equity'],
       ffn: this._state.user['ffn'],
       tier: tier['id'],

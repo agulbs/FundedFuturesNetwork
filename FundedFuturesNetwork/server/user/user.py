@@ -82,6 +82,31 @@ def user():
 	return jsonify({'message': "could not get user info", 'status': 400})
 
 
+@user_bp.route("/user/update", methods=["POST"])
+def user_update():
+	data = request.get_json(force=True)
+
+	with app.db() as db:
+		sql = "UPDATE FundedFuturesNetwork.Users SET "
+		for k,v in data.items():
+			sql += f"{k}=%s, "
+
+		sql = sql[0:len(sql)-2]
+		sql += "WHERE username=%s"
+		data['_username'] = data['username']
+
+		print(sql)
+		print(data)
+
+		update = db.commit(sql, data)
+		if update == 1:
+			return jsonify({'message': "succesfully updated user", 'status': 200})
+
+
+	return jsonify({'message': "could not update user info", 'status': 400})
+
+
+
 @user_bp.route("/user/memberships", methods=["POST"])
 def user_memberships():
 	data = request.get_json(force=True)
@@ -99,6 +124,32 @@ def user_memberships():
 			return jsonify({'message': memberships, 'status': 200})
 
 	return jsonify({'message': "No memberships found", 'status': 400})
+
+
+@user_bp.route("/user/invoices", methods=["POST"])
+def user_invoices():
+	data = request.get_json(force=True)
+
+
+	print(data)
+
+	with app.db() as db:
+		sql = """
+		SELECT
+			TT.*,
+			T.package,
+			T.receipt,
+			T.systemDate
+		FROM FundedFuturesNetwork.Transactions T
+		LEFT JOIN FundedFuturesNetwork.Tiers TT ON TT.id=T.tier
+		WHERE T.username=%s
+		ORDER BY T.systemDate DESC
+		"""
+		invoices = db.query(sql, data)
+		if len(invoices) > 0:
+			return jsonify({'message': invoices, 'status': 200})
+
+	return jsonify({'message': "No invoices found", 'status': 400})
 
 
 @user_bp.route("/user/purchase-membership", methods=["POST"])
