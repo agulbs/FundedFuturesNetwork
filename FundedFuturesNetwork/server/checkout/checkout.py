@@ -14,8 +14,6 @@ stripe.api_key = "sk_test_51LVNKPKSvK2NDY9DYpI8IbVFdKbG9YvYCmwDQTNPorS4ZHtzybSH0
 @checkout_bp.route("/checkout", methods=["POST"])
 def checkout():
 	data = request.get_json(force=True)
-	pprint(data)
-
 
 	customer = stripe.Customer.create(email=data['user']['email'], source=data['token']['id'])
 	charge = stripe.Charge.create(
@@ -44,5 +42,4 @@ def checkout():
 
 		db.commit(sql, params)
 
-	pprint(charge)
 	return jsonify({'message': charge, 'status': 200})

@@ -41,7 +41,6 @@ class DB():
 
     def commit(self, qry, params):
         try:
-            pprint(list(params.values()))
             self.cursor.execute(qry, list(params.values()))
             self.conn.commit()
 

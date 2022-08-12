@@ -23,6 +23,7 @@ import { ProfileComponent } from './components/dashboard/profile/profile.compone
 import { ReportingComponent } from './components/dashboard/reporting/reporting.component';
 import { MembershipComponent } from './components/dashboard/billing/membership/membership.component';
 import { PurchasePlanComponent } from './components/dashboard/billing/purchase-plan/purchase-plan.component';
+import { AboutComponent } from './components/homepage/about/about.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { PurchasePlanComponent } from './components/dashboard/billing/purchase-p
     ReportingComponent,
     MembershipComponent,
     PurchasePlanComponent,
+    AboutComponent,
 
   ],
   imports: [

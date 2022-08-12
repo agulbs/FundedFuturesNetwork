@@ -5,3 +5,12 @@
 .video-section {
     color: white !important;
 }
+
+.rules td{
+    font-size: 14px;
+    
+}
+.rules{
+    font-size: 14px;
+    border-color: #E5C561
+}

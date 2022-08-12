@@ -165,3 +165,12 @@ def user_pucrchase_tier():
 			return jsonify({'message': "Purchased tier", 'status': 200})
 
 	return jsonify({'message': "Could not purchase tier", 'status': 400})
+
+
+
+@user_bp.route("/user/rithmic/disable", methods=["POST"])
+def user_rithmic_disable():
+	data = request.get_json(force=True)
+	crud.disable_account(data)
+
+	return jsonify({'message': "Could not purchase tier", 'status': 400})

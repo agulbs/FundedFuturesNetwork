@@ -5,6 +5,7 @@ from flask import current_app as app
 from .products import tiers as rms
 import random
 import string
+import time
 
 
 def add_user(user):
@@ -481,14 +482,12 @@ def add_account(user):
 		"cash": f"{user['cash']}"
 	}
 
-	print(user)
 
 	fout = ""
 	filename = f"{user['username']}NewAccount.csv"
 	if user['ffn']:
 		filename = f"{user['username']}ResetAccount.csv"
 		unassign_account['account_id'] = user['ffn']
-		print(unassign_account.values())
 		fout += ','.join(unassign_account.values()) + "\n"
 
 	fout += ','.join(exch_entitlements.values()) + "\n"
@@ -505,10 +504,79 @@ def add_account(user):
 			fout += f"set_rms_product,FundedFuturesNetwork,{ffn}," + ','.join(tier)  + "\n"
 
 
-
 	with open(filename, "w") as f:
 		f.write(fout)
 
+	send(filename)
+
+	queries = []
+
+	if user['reset']:
+		print("THIUS IS A RESET")
+		del unassign_account['command']
+		unassign_account['useranme'] = user['username']
+
+		queries.append({
+			'sql': "INSERT INTO Rithmic.UnassignAccount (`account_id`, `ib_id`, `user_id`, `username`) VALUES (%s, %s, %s, %s)",
+			'params': unassign_account
+		})
+
+	queries.append({ 'sql': "INSERT INTO FundedFuturesNetwork.FFN (username, ffn) VALUES (%s, %s)", 'params': { 'username': user['username'], 'ffn': ffn } })
+	queries.append({ 'sql': "UPDATE FundedFuturesNetwork.Users SET ffn=%s where username=%s", 'params': {'ffn': ffn, 'username': user['username']}})
+
+
+	del exch_entitlements['command']
+	exch_entitlements['username'] = user['username']
+	queries.append({ 'sql': "INSERT INTO Rithmic.ExchEntitlements ( user_i, exchang, statu, market_depth, useranme ) VALUES (%s, %s, %s, %s, %s)", 'params': exch_entitlements})
+
+	sql_add_account = """
+	INSERT INTO Rithmic.AddAccount ( ib_id, account_id, account_name, currency, type, customer_firm, status, risk_algo, rms, auto_liquidate, auto_liquidate_criteria, auot_liquidate_threshold, include_comission_pnl, disable_on_auto_liq, smfee_omnibus_acct, smfee_cust_firm, username )
+	VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+	"""
+	params = {
+		'ib_id': add_account['ib_id'],
+		'account_id': add_account['account_id'],
+		'account_name': add_account['account_name'],
+		'currency': add_account['currency'],
+		'type': add_account['type'],
+		'customer_firm': add_account['customer_firm'],
+		'status': add_account['status'],
+		'risk_algo': add_account['risk_algo'],
+		'rms': add_account['rms'],
+		'auto_liquidate': add_account['auto_liquidate'],
+		'auto_liquidate_criteria': add_account['auto_liquidate_criteria'],
+		'auto_liquidate_threshold': add_account['auto_liquidate_threshold'],
+		'include_commission_pnl': add_account['include_commission_pnl'],
+		'disable_on_auto_liq': add_account['disable_on_auto_liq'],
+		'smfee_omnibus_acct': add_account['smfee_omnibus_acct'],
+		'smfee_cust_firm': add_account['smfee_cust_firm'],
+		'username': user['username']
+	}
+
+	queries.append({ 'sql': sql_add_account, 'params': params})
+
+	del assign_account['command']
+	assign_account['username'] = user['username']
+	queries.append({ 'sql': "INSERT INTO Rithmic.AssignAccount (ib_id, user_id, account_id, access_type, username) VALUES (%s, %s, %s, %s, %s)", 'params': assign_account})
+
+	del equity_run['command']
+	equity_run['username'] = user['username']
+	queries.append({'sql': "INSERT INTO Rithmic.EquityRun (account_id, cash, fcm_id, ib_id, username, operation) VALUES (%s, %s, %s, %s, %s, %s)", 'params': equity_run})
+
+	write_to_db(queries)
+
+
+def disable_account(user):
+	equity_run = {
+		"command": "equity_run",
+		"operation": "set",
+		"fcm_id": "Rithmic-FCM",
+		"ib_id": "FundedFuturesNetwork",
+		"account_id": user['ffn'],
+		"cash": "0"
+	}
+
+def send(filename):
 	host = "ritpz11300.11.rithmic.com"                    #hard-coded
 	port = 22
 	transport = paramiko.Transport((host, port))
@@ -520,55 +588,11 @@ def add_account(user):
 	sftp = paramiko.SFTPClient.from_transport(transport)
 	sftp.put(f"{filename}", f"/home/uIDEJfOZY5fWl/RithmicPaperTrading/coperations/{filename}")
 
+def write_to_db(data):
 	with app.db() as db:
-		if user['reset']:
-			sql_unasign = "INSERT INTO Rithmic.UnassignAccount (ib_id, user_id, account_id) VALUES (%s, %s, %s)"
-			del unassign_account['command']
-			db.commit(sql_unasign, unassign_account)
-
-		sql_ffns = "INSERT INTO FundedFuturesNetwork.FFN (username, ffn) VALUES (%s, %s)"
-		db.commit(sql_ffns, {'username': user['username'], 'ffn': ffn})
-
-		sql_update = "UPDATE FundedFuturesNetwork.Users SET ffn=%s where username=%s"
-		params = {'ffn': ffn, 'username': user['username']}
-		db.commit(sql_update, params)
-
-		sql_exch_entitlements = "INSERT INTO Rithmic.ExchEntitlements ( user_i, exchang, statu, market_depth ) VALUES (%s, %s, %s, %s)"
-		del exch_entitlements['command']
-		db.commit(sql_exch_entitlements, exch_entitlements)
-
-		sql_add_account = """
-		INSERT INTO Rithmic.AddAccount ( ib_id, account_id, account_name, currency, type, customer_firm, status, risk_algo, rms, auto_liquidate, auto_liquidate_criteria, auot_liquidate_threshold, include_comission_pnl, disable_on_auto_liq, smfee_omnibus_acct, smfee_cust_firm )
-		VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )
-		"""
-		params = {
-			'ib_id': add_account['ib_id'],
-			'account_id': add_account['account_id'],
-			'account_name': add_account['account_name'],
-			'currency': add_account['currency'],
-			'type': add_account['type'],
-			'customer_firm': add_account['customer_firm'],
-			'status': add_account['status'],
-			'risk_algo': add_account['risk_algo'],
-			'rms': add_account['rms'],
-			'auto_liquidate': add_account['auto_liquidate'],
-			'auto_liquidate_criteria': add_account['auto_liquidate_criteria'],
-			'auto_liquidate_threshold': add_account['auto_liquidate_threshold'],
-			'include_commission_pnl': add_account['include_commission_pnl'],
-			'disable_on_auto_liq': add_account['disable_on_auto_liq'],
-			'smfee_omnibus_acct': add_account['smfee_omnibus_acct'],
-			'smfee_cust_firm': add_account['smfee_cust_firm'],
-		}
-		db.commit(sql_add_account, params)
-
-		sql_assign_account = "INSERT INTO Rithmic.AssignAccount (ib_id, user_id, account_id, access_type) VALUES (%s, %s, %s, %s)"
-		del assign_account['command']
-		db.commit(sql_assign_account, assign_account)
-
-		sql_equity_run = "INSERT INTO Rithmic.EquityRun (operation, fcm_id, ib_id, account_id, cash) VALUES (%s, %s, %s, %s, %s)"
-		del equity_run['command']
-		db.commit(sql_equity_run, equity_run)
-
+		for d in data:
+			pprint(d)
+			db.commit( d['sql'], d['params'])
 
 # def reset_account(user):
 # 	equity_run = {
