@@ -481,11 +481,14 @@ def add_account(user):
 		"cash": f"{user['cash']}"
 	}
 
+	print(user)
+
 	fout = ""
 	filename = f"{user['username']}NewAccount.csv"
-	if user['reset']:
+	if user['ffn']:
 		filename = f"{user['username']}ResetAccount.csv"
 		unassign_account['account_id'] = user['ffn']
+		print(unassign_account.values())
 		fout += ','.join(unassign_account.values()) + "\n"
 
 	fout += ','.join(exch_entitlements.values()) + "\n"

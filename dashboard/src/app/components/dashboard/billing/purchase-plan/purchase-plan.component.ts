@@ -135,7 +135,11 @@ export class PurchasePlanComponent implements OnInit {
 
       } else {
         result['user'] = this._state.user;
+        result['user']['cash'] = this.selectedTier['equity']
+        result['user']['tier'] = this.selectedTier['id']
+        result['user']['reset'] = this._state.user['ffn'] != null
         result['purchase'] = this.selectedTier
+        console.log(result)
         this._requests.postRequest("checkout", result).subscribe(res => {
           console.log(res)
         })

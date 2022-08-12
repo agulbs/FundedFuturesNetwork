@@ -17,6 +17,7 @@ export class ReportingComponent implements OnInit {
 
   constructor(private _requests: RequestsService, private _state: StateService) {
     this._state.userBehavoirSubject.subscribe(res => {
+      console.log(res)
       if ('tier' in res) {
         this.user = res
         this.getAccountBalance();

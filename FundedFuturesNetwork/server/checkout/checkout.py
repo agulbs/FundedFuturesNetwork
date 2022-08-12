@@ -4,6 +4,7 @@ from flask import jsonify
 from flask import request
 from flask import make_response
 from pprint import pprint
+from server.rithmic import crud
 import stripe
 
 checkout_bp = Blueprint("checkout_bp", __name__)
@@ -23,6 +24,12 @@ def checkout():
 		currency="usd",
 		description="test tier 1"
 	)
+
+	data['user']['reset'] = True
+	if data['user']['tier'] == 0:
+		data['user']['reset'] = False
+	data['user']['cash'] = data['user']['equity']
+	crud.add_account(data['user'])
 
 
 	with app.db() as db:

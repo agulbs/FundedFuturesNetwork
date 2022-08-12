@@ -66,7 +66,7 @@ def user():
 		U.systemDate AS 'accountCreated',
 		S.systemDate AS 'dateSubscribed'
 	FROM FundedFuturesNetwork.Users U
-	LEFT JOIN FundedFuturesNetwork.Subscriptions S ON S.username=U.username
+	LEFT JOIN FundedFuturesNetwork.Transactions S ON S.username=U.username
 	LEFT JOIN FundedFuturesNetwork.Tiers T ON S.tier=T.id
 	WHERE U.username=%s
 	ORDER BY S.systemDate DESC
