@@ -27,6 +27,7 @@ import { MembershipComponent } from './components/dashboard/billing/membership/m
 import { PurchasePlanComponent } from './components/dashboard/billing/purchase-plan/purchase-plan.component';
 import { AboutComponent } from './components/homepage/about/about.component';
 import { StripeComponent } from './components/stripe/stripe.component';
+import { LandingPageComponent } from './components/homepage/landing-page/landing-page.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { StripeComponent } from './components/stripe/stripe.component';
     PurchasePlanComponent,
     AboutComponent,
     StripeComponent,
+    LandingPageComponent,
 
   ],
   imports: [

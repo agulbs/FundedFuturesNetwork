@@ -1,4 +1,68 @@
-<section class="h-100">
+<app-homepage-navbar></app-homepage-navbar>
+<section>
+  <div class="container">
+    <div class="section-title mt-3">
+      <h2>Signup</h2>
+    </div>
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <form [formGroup]="registerForm" (ngSubmit)="registerFormSubmit" class="row">
+        <div class="col-md-6">
+          <label for="id_firstName" class="form-label">First name</label>
+          <input formControlName="firstName" type="text" class="form-control" id="id_firstName" required>
+          <div *ngIf="firstName.touched && firstName.errors?.required" class="d-block invalid-feedback">Provide your first name.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="id_lastName" class="form-label">Last name</label>
+          <input formControlName="lastName" type="text" class="form-control" id="id_lastName" required>
+          <div *ngIf="lastName.touched && lastName.errors?.required" class="d-block invalid-feedback">Provide your first name.</div>
+        </div>
+        <div class="col-md-6 mt-4">
+          <label for="id_email" class="form-label">Email address</label>
+          <input formControlName="email" [class.is-invalid]="email.touched && email.invalid" type="email" class="form-control" id="id_email">
+          <div *ngIf="email.invalid && email.touched">
+            <div *ngIf="email.errors?.required" class="d-block invalid-feedback">Please
+              provide a Email.</div>
+            <div *ngIf="email.errors?.email" class="d-block invalid-feedback">Email address is not valid</div>
+          </div>
+        </div>
+        <div class="col-md-6 mt-4">
+          <label for="id_phone" class="form-label">Mobile Number</label>
+          <input formControlName="phone" [class.is-invalid]="phone.touched && phone.invalid" type="text" class="form-control" id="id_phone">
+          <div *ngIf="phone.touched && phone.errors?.required" class="d-block invalid-feedback">Provide your mobile number.</div>
+        </div>
+        <div class="col-md-12 mt-4">
+          <label for="id_address" class="form-label">Address</label>
+          <input formControlName="address" type="text" class="form-control" id="id_address" ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" required>
+          <div *ngIf="address.touched && address.errors?.required" class="d-block invalid-feedback">Provide your address.</div>
+        </div>
+        <div class="col-md-12 mt-4">
+          <label for="id_username" class="form-label">Username</label>
+          <input formControlName="username" type="text" class="form-control" id="id_username" required>
+          <div *ngIf="username.touched && username.errors?.required" class="d-block invalid-feedback">Please provide your username. No Spaces Allowed.</div>
+        </div>
+        <div class="col-md-6 mt-4">
+          <label for="id_Password" class="form-label">Password</label>
+          <input formControlName="password" [class.is-invalid]="password.touched && password.invalid" type="password" class="form-control" id="id_Password">
+          <div *ngIf="password.touched && password.errors?.required" class="d-block invalid-feedback">
+            Provide a password.</div>
+        </div>
+        <div class="col-md-6 mt-4">
+          <label for="id_Password" class="form-label">Conformation Password</label>
+          <input formControlName="password1" [class.is-invalid]="password1.touched && password1.invalid" type="password" class="form-control" id="id_Password1">
+          <div *ngIf="password1.touched && password1.errors?.required" class="d-block invalid-feedback">Please Enter Conformation Password</div>
+        </div>
+        <div class="col-md-6 mt-4">
+          <button [disabled]="registerForm.invalid" type="submit" class="btn btn-primary px-5" (click)="signup()">Submit</button>
+        </div>
+        <div class="col-12 d-flex justify-content-start mt-2 font-weight-light">
+          <a routerLink="/login">Already have an account?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- <section>
   <div class="container py-5 h-100">
     <div class="card">
       <div class="card-header">
@@ -62,4 +126,4 @@
     </div>
 
   </div>
-</section>
+</section> -->

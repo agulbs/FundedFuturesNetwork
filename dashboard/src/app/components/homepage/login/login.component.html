@@ -1,39 +1,29 @@
-<section class="h-100 bg-dark">
-  <div class="container py-5 h-100">
+<app-homepage-navbar></app-homepage-navbar>
+<section>
+  <div class="container">
+    <div class="section-title mt-3">
+      <h2>Signup</h2>
+    </div>
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col">
-        <div class="card card-registration my-4">
-          <div class="row g-0">
-            <div class="col-xl-6 d-none d-xl-block">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp" alt="Sample photo" class="img-fluid" style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
-            </div>
-            <div class="col-xl-6">
-              <div class="card-body p-md-5 text-black">
-                <h3 class="mb-5 text-uppercase">Dashboard Login</h3>
-
-                <div class="row">
-                  <div class="mb-4">
-                    <div class="form-outline">
-                      <input type="text" id="form3Example1m" class="form-control form-control-lg" [(ngModel)]="user.username" />
-                      <label class="form-label" for="form3Example1m">Username</label>
-                    </div>
-                  </div>
-                  <div class="mb-4">
-                    <div class="form-outline">
-                      <input type="text" id="form3Example1n" class="form-control form-control-lg" [(ngModel)]="user.password" />
-                      <label class="form-label" for="form3Example1n">Password</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="d-flex justify-content-center pt-3">
-                  <button type="button" class="btn btn-warning btn-lg ms-2" (click)="login()">Login</button>
-                </div>
-              </div>
-            </div>
-          </div>
+      <form [formGroup]="loginForm" (ngSubmit)="loginFormSubmit" class="row">
+        <div class="col-md-12">
+          <label for="id_username" class="form-label">Username</label>
+          <input formControlName="username" type="text" class="form-control" id="id_username" required>
+          <div *ngIf="username.touched && username.errors?.required" class="d-block invalid-feedback">Username required.</div>
         </div>
-      </div>
+        <div class="col-md-12">
+          <label for="id_password" class="form-label">Password</label>
+          <input formControlName="password" type="password" class="form-control" id="id_password" required>
+          <div *ngIf="password.touched && password.errors?.required" class="d-block invalid-feedback">Password required</div>
+        </div>
+
+        <div class="col-md-6 mt-4">
+          <button [disabled]="loginForm.invalid" type="submit" class="btn btn-primary px-5" (click)="login()">Login</button>
+        </div>
+        <div class="col-12 d-flex justify-content-start mt-2 font-weight-light">
+          <a routerLink="/sign-up">Don't have an account?</a>
+        </div>
+      </form>
     </div>
   </div>
 </section>

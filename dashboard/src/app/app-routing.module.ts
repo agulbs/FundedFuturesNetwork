@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomepageComponent } from './components/homepage/homepage.component';
 
+import { LandingPageComponent } from './components/homepage/landing-page/landing-page.component';
 import { AboutComponent } from './components/homepage/about/about.component';
 import { PricingComponent } from './components/homepage/pricing/pricing.component';
 import { SignupComponent } from './components/homepage/signup/signup.component';
@@ -17,14 +18,15 @@ import { InvoiceComponent } from './components/dashboard/invoice/invoice.compone
 import { ProfileComponent } from './components/dashboard/profile/profile.component';
 
 const routes: Routes = [
+
   {
     path: "", component: HomepageComponent, children: [
-      { path: "", component: PricingComponent, },
-      { path: "about-us", component: AboutComponent, },
+      { path: "", component: LandingPageComponent, },
       { path: "sign-up", component: SignupComponent, },
       { path: "login", component: LoginComponent, },
     ]
   },
+
   {
     path: "dashboard", component: DashboardComponent, children: [
       { path: "", component: ReportingComponent },
