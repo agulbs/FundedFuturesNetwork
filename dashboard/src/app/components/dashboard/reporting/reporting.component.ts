@@ -24,7 +24,8 @@ export class ReportingComponent implements OnInit {
   constructor(private _requests: RequestsService, private _state: StateService, private router: Router) {
     this._state.userBehavoirSubject.subscribe(res => {
       if (Object.keys(res).length > 0 && 'tier' in res) {
-        this.user = res
+        this.user = res;
+        console.log(this.user)
         this.getAccountBalance();
       }
     })
@@ -35,8 +36,8 @@ export class ReportingComponent implements OnInit {
 
   public getAccountBalance() {
 
-    // const params = { 'acct': this.user['ffn'] };
-    const params = { 'acct': "FFN-48500878" };
+    const params = { 'acct': this.user['ffn'] };
+    // const params = { 'acct': "FFN-48500878" };
     this._requests.customPost("https://fundedfuturesnetwork.com/ftp/", params).subscribe(res => {
       console.log(res)
       if (Object.keys(res).length == 0) {

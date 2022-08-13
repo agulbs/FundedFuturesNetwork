@@ -1,11 +1,11 @@
-<div class="container" *ngIf="user['tier'] == 0">
+<div class="container" *ngIf="'tier' not in user or !user['tier'] or user['tier'] == 0">
   <div class="row">
     <div class="col-12 d-flex justify-content-center">
       <button type="button" class="btn btn-lg btn-outline-primary justify-content-center" routerLink="../dashboard/billing">Click here to select a membership</button>
     </div>
   </div>
 </div>
-<div class="container" *ngIf="user['tier'] != 0">
+<div class="container" *ngIf="user['tier'] and user['tier'] != 0">
   <div class="card mb-4 rounded-3 shadow-sm">
     <div class="card-header py-3">
       <div class="row">

@@ -3,6 +3,7 @@ import { RequestsService } from '../../../services/requests.service';
 import { Router } from '@angular/router';
 import { GooglePlaceDirective } from "ngx-google-places-autocomplete";
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
@@ -11,7 +12,23 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 })
 
 export class SignupComponent implements OnInit {
-  // @ViewChild("placesRef") placesRef: GooglePlaceDirective;
+
+  private nonWhitespaceRegExp: RegExp = new RegExp("[a-zA-Z0-9]");
+  public registerForm: FormGroup = this.fb.group({
+    firstName: ['', [Validators.required]],
+    lastName: ['', [Validators.required]],
+    address: ['', [Validators.required]],
+    city: "",
+    state: "",
+    country: "",
+    postal: "",
+    phone: ['', [Validators.required, Validators.minLength(10)]],
+    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required, Validators.minLength(10), this.noWhiteSpace]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    password1: ['', [Validators.required, Validators.minLength(8)]]
+  });
+
 
   private countries = { 'US': "USA", 'CA': "Canada" }
 
@@ -29,16 +46,38 @@ export class SignupComponent implements OnInit {
     username: "",
   }
 
-  constructor(private _requests: RequestsService, private router: Router) { }
+  constructor(private _requests: RequestsService, private router: Router, private fb: FormBuilder) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  public get firstName(): any { return this.registerForm.get('firstName'); }
+  public get lastName(): any { return this.registerForm.get('lastName'); }
+  public get address(): any { return this.registerForm.get('address'); }
+  public get email(): any { return this.registerForm.get('email'); }
+  public get phone(): any { return this.registerForm.get('phone'); }
+  public get username(): any { return this.registerForm.get('username'); }
+  public get password(): any { return this.registerForm.get('password'); }
+  public get password1(): any { return this.registerForm.get('password1'); }
+
+  public noWhiteSpace(control) {
+    console.log(control)
+    if ((control.value).indexOf(' ') >= 0) {
+      return { cannotContainSpace: true };
+    }
+
+    return null;
+  }
+
+  registerFormSubmit(): void {
+    // const formData = this.registerForm.value;
+    // delete formData.password1;
+    // console.log(formData);
+    // this.signup()
   }
 
   public handleAddressChange(address) {
-    console.log(address)
     this.user.address = address.formatted_address;
     for (var a of address.address_components) {
-      console.log(a)
       if (a.types.includes("locality")) {
         this.user.city = a.long_name
       }
@@ -60,12 +99,17 @@ export class SignupComponent implements OnInit {
       this.user.country = this.countries[this.user.country]
     } else {
       this.user.state = "";
-
     }
   }
 
   public signup() {
-    console.log(this.user);
+
+    this.user['email'] = this.registerForm.value['email'];
+    this.user['firstName'] = this.registerForm.value['firstName'];
+    this.user['lastName'] = this.registerForm.value['lastName'];
+    this.user['password'] = this.registerForm.value['password'];
+    this.user['phone'] = this.registerForm.value['phone'];
+    this.user['username'] = this.registerForm.value['username'];
 
     this._requests.postRequest("signup", this.user).subscribe(res => {
       if (res['status'] == 200) {

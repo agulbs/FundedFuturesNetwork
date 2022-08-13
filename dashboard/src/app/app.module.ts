@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
@@ -24,6 +26,7 @@ import { ReportingComponent } from './components/dashboard/reporting/reporting.c
 import { MembershipComponent } from './components/dashboard/billing/membership/membership.component';
 import { PurchasePlanComponent } from './components/dashboard/billing/purchase-plan/purchase-plan.component';
 import { AboutComponent } from './components/homepage/about/about.component';
+import { StripeComponent } from './components/stripe/stripe.component';
 
 
 @NgModule({
@@ -43,12 +46,14 @@ import { AboutComponent } from './components/homepage/about/about.component';
     MembershipComponent,
     PurchasePlanComponent,
     AboutComponent,
+    StripeComponent,
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     GooglePlaceModule,
     StripeModule.forRoot("pk_test_51LVNKPKSvK2NDY9DlJ0Rk1sHelqPhWFoufs4oiglsVANLWDoDk7AaFsunqsLoGpm1kIof6Z61UPTUtxqrPSliU8w00Elkoisnb")

@@ -18,9 +18,12 @@ export class PurchasePlanComponent implements OnInit {
   public tiers = [];
   public selectedTier = {};
   public user = {}
+  public affiliateCode = "";
+  public discount = 0;
 
   public stripe;
   public card;
+  public displayError = "";
 
   constructor(
     private _requests: RequestsService,
@@ -52,10 +55,12 @@ export class PurchasePlanComponent implements OnInit {
       this.selectedTier['package'] = "Standard Package"
       this.selectedTier['status'] = "S"
       this.selectedTier['price'] = tier['standardPrice'];
+      this.selectedTier['total'] = tier['standardPrice'];
     } else {
       this.selectedTier['package'] = "Express Package"
       this.selectedTier['status'] = "E"
       this.selectedTier['price'] = tier['expressPrice'];
+      this.selectedTier['total'] = tier['expressPrice'];
     }
 
     this.user = {};
@@ -118,13 +123,31 @@ export class PurchasePlanComponent implements OnInit {
     this.card = elements.create('card', { style: style });
     this.card.mount('#card-element');
 
+
     this.card.addEventListener('change', (event) => {
       if (event.error) {
         console.log(event.error)
+        this.displayError = event.error.message;
       } else {
+        this.displayError = ''
       }
     });
 
+  }
+
+  public applyAffiliateDiscount() {
+    if (this.affiliateCode.length < 0) {
+      this.discount = 0;
+      return;
+    }
+    const params = { user: this._state.user, affiliateCode: this.affiliateCode }
+    this._requests.postRequest("checkout/apply-discount", params).subscribe(res => {
+      if (res['status'] == 200) {
+        this.discount = this.selectedTier['price'] * res['message'][0]['discount'];
+        this.selectedTier['total'] = this.selectedTier['price'] - this.discount;
+        this.selectedTier['affiliateCode'] = this.affiliateCode
+      }
+    })
   }
 
   public createToken() {
@@ -139,6 +162,7 @@ export class PurchasePlanComponent implements OnInit {
         result['user']['tier'] = this.selectedTier['id']
         result['user']['reset'] = this._state.user['ffn'] != null
         result['purchase'] = this.selectedTier
+        result['purchase']['price'] = result['purchase']['total']
         console.log(result)
         this._requests.postRequest("checkout", result).subscribe(res => {
           console.log(res)
