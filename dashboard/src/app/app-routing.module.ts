@@ -17,6 +17,8 @@ import { MembershipComponent } from './components/dashboard/billing/membership/m
 import { InvoiceComponent } from './components/dashboard/invoice/invoice.component';
 import { ProfileComponent } from './components/dashboard/profile/profile.component';
 
+import { AuthGuard } from './guards/auth.guard';
+
 const routes: Routes = [
 
   {
@@ -28,7 +30,7 @@ const routes: Routes = [
   },
 
   {
-    path: "dashboard", component: DashboardComponent, children: [
+    path: "dashboard", component: DashboardComponent, canActivate: [AuthGuard], children: [
       { path: "", component: ReportingComponent },
       { path: "billing", component: BillingComponent },
       { path: "invoice", component: InvoiceComponent, },

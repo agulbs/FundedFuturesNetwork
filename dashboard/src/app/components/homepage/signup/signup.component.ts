@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RequestsService } from '../../../services/requests.service';
+import { StateService } from '../../../services/state.service';
 import { Router } from '@angular/router';
 import { GooglePlaceDirective } from "ngx-google-places-autocomplete";
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
@@ -46,9 +47,13 @@ export class SignupComponent implements OnInit {
     username: "",
   }
 
-  constructor(private _requests: RequestsService, private router: Router, private fb: FormBuilder) { }
+  constructor(private _requests: RequestsService, private router: Router, private fb: FormBuilder, private _state: StateService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    if (this._state.user) {
+      this.router.navigateByUrl("/dashboard")
+    }
+  }
 
   public get firstName(): any { return this.registerForm.get('firstName'); }
   public get lastName(): any { return this.registerForm.get('lastName'); }

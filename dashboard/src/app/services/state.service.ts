@@ -12,6 +12,7 @@ export class StateService {
   constructor() { }
 
   public setUser(user) {
+
     delete user['password']
     if ('token' in this.user) {
       user['token'] = this.user['token']
