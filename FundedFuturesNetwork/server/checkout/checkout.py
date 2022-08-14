@@ -28,7 +28,7 @@ def checkout():
 	data['user']['reset'] = True
 	if data['user']['tier'] == 0:
 		data['user']['reset'] = False
-	data['user']['cash'] = data['user']['equity']
+	
 	crud.add_account(data['user'])
 
 
