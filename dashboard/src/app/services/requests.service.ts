@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class RequestsService {
-  private url: String = "http://127.0.0.1:5000/";
+  // private url: String = "http://127.0.0.1:5000/";
+  private url: String = "http://47.16.165.232:5000/";
 
   constructor(private http: HttpClient, private router: Router) { }
 

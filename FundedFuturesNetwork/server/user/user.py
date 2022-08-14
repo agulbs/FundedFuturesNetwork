@@ -17,7 +17,7 @@ user_bp = Blueprint("user_bp", __name__)
 @user_bp.route("/signup", methods=["POST"])
 def signup():
 	data = request.get_json(force=True)
-	password = data['password']
+	rithmicpass = password = data['password']
 	data['password'] = generate_password_hash(password, method='sha256')
 
 	with app.db() as db:
@@ -31,6 +31,7 @@ def signup():
 
 		if commit == 1:
 			commit = db.commit(sql, params)
+			data['password'] = rithmicpass
 			crud.add_user(data)
 			return jsonify({'message': "Signup successful", 'status': 200})
 
