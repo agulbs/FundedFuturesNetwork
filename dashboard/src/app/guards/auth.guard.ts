@@ -15,14 +15,21 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    //
     if (!this.user || Object.keys(this.user).length == 0 || !('token' in this.user)) {
       return false;
     }
 
     try {
       const exp = (JSON.parse(atob(this.user['token'].split('.')[1]))).exp;
-      return new Date() <= new Date(exp * 1000);
+
+      if (new Date() >= new Date(exp * 1000)) {
+        this.router.navigateByUrl("/login");
+        localStorage.setItem("ffn", JSON.stringify({}))
+        this._auth.userSubject.next({})
+        return false;
+      }
+
+      return true
 
     } catch (error) {
       console.log(error)

@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
     }
 
     this._requests.postRequest("login", this.user, this.user).subscribe(res => {
+      console.log(res)
       if (res['status'] == 200) {
         this.user['token'] = res['message']
         this._auth.userSubject.next(this.user);
