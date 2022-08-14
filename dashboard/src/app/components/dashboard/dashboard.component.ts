@@ -22,7 +22,6 @@ export class DashboardComponent implements OnInit {
     var user = localStorage.getItem('ffn');
 
     if (user) {
-      console.log(user)
       this.saveUser(JSON.parse(user));
     } else {
       alert("REROUTE")
@@ -31,7 +30,6 @@ export class DashboardComponent implements OnInit {
 
   public saveUser(user) {
     this._requests.postRequest("user", { 'user': user['username'] }).subscribe(res => {
-      console.log(res)
       if (res['status'] == 200) {
         this._state.setUser(res['message']);
         this.user = res['message'];

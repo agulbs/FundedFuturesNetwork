@@ -1,23 +1,25 @@
-<div class="container" *ngIf="'tier' not in user or !user['tier'] or user['tier'] == 0">
+<div class="container " *ngIf="forceBuy">
   <div class="row">
     <div class="col-12 d-flex justify-content-center">
       <button type="button" class="btn btn-lg btn-outline-primary justify-content-center" routerLink="../dashboard/billing">Click here to select a membership</button>
     </div>
   </div>
 </div>
-<div class="container" *ngIf="user['tier'] and user['tier'] != 0">
+
+<div class="container" *ngIf="!forceBuy">
   <div class="card mb-4 rounded-3 shadow-sm">
     <div class="card-header py-3">
       <div class="row">
         <div class="col-6 m-auto">
           <h5 class="my-0 fw-normal">{{user['ffn']}}</h5>
+          <h6 class="my-0 mt-1 fw-light text-muted">{{notSetup}}</h6>
         </div>
         <div class="col-6 d-flex m-auto justify-content-end">
-          <button type="button" class="btn  btn-outline-danger">Reset Account</button>
+          <button type="button" class="btn  btn-outline-danger" *ngIf="accountSetup">Reset Account</button>
         </div>
       </div>
     </div>
-    <div class="card-body">
+    <div class="card-body" *ngIf="accountSetup">
       <div class="conatiner-fluid">
         <div class="card mb-2 rounded-3 shadow-sm">
           <div class="card-header py-3">

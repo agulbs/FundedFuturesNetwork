@@ -187,6 +187,7 @@ export class PurchasePlanComponent implements OnInit {
         this._state.user['friendly'] = tier['friendly'];
         this._state.user['price'] = tier['price'];
         this._state.setUser(this._state.user);
+        this.router.navigateByUrl("../dashboard")
       }
     })
   }

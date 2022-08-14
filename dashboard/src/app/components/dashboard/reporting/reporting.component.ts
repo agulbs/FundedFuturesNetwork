@@ -13,6 +13,10 @@ import Swal from 'ngx-angular8-sweetalert2'
 })
 export class ReportingComponent implements OnInit {
   public user = {};
+  public forceBuy = true;
+  public notSetup = "";
+  public accountSetup = false;
+
   public accountBalance = {
     balance: 0,
     pnl: 0,
@@ -25,13 +29,17 @@ export class ReportingComponent implements OnInit {
     this._state.userBehavoirSubject.subscribe(res => {
       if (Object.keys(res).length > 0 && 'tier' in res) {
         this.user = res;
-        console.log(this.user)
         this.getAccountBalance();
+
+        if (res['tier'] > 0) {
+          this.forceBuy = false;
+        }
       }
     })
   }
 
   ngOnInit(): void {
+    console.log(this.user)
   }
 
   public getAccountBalance() {
@@ -39,10 +47,13 @@ export class ReportingComponent implements OnInit {
     const params = { 'acct': this.user['ffn'] };
     // const params = { 'acct': "FFN-48500878" };
     this._requests.customPost("https://fundedfuturesnetwork.com/ftp/", params).subscribe(res => {
-      console.log(res)
+
       if (Object.keys(res).length == 0) {
+        this.notSetup = "Your account is being setup"
         return;
       }
+
+      this.accountSetup = true;
 
       const accountBalance = Number(res['Account Balance']);
       const cashOnHand = Number(res['Cash On Hand (Previous EOD)']);
@@ -70,7 +81,7 @@ export class ReportingComponent implements OnInit {
 
   public triggerResetMessage() {
     this._requests.postRequest("user/rithmic/disable", { user: this.user }).subscribe(res => {
-      console.log(res);
+
 
       this.resetFlag = true;
     })

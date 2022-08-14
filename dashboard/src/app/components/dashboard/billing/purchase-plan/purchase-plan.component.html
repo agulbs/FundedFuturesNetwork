@@ -1,22 +1,37 @@
-<div class="row row-cols-1 row-cols-md-3 mb-3 text-center container justify-content-center m-auto">
-  <div class="col" *ngFor="let tier of tiers">
-    <div class="card mb-4 rounded-3 shadow-sm">
-      <div class="card-header py-3">
-        <h4 class="my-0 fw-normal">{{tier['friendly']}}</h4>
-      </div>
-      <div class="card-body">
-        <h1 class="card-title pricing-card-title"><small class="text-muted fw-light"></small></h1>
-        <ul class="list-unstyled mt-3 mb-4">
-          <li class="mt-2">{{tier['dailyDrawdown']}}</li>
-          <li class="mt-2">{{tier['trailingMax']}}</li>
-          <li class="mt-2">{{tier['contractMax']}}</li>
-        </ul>
-        <button type="button" class="w-100 mb-4 btn btn-md btn-outline-primary" data-bs-toggle="modal" data-bs-target="#stripeModal" (click)="setSelectedTier(tier, 0)">Standard Package: {{tier['standardPrice'] | currency}}/mo</button>
-        <button type="button" class="w-100 btn btn-md btn-outline-success" data-bs-toggle="modal" data-bs-target="#stripeModal" (click)="setSelectedTier(tier, 1)">Express Package: {{tier['expressPrice'] | currency }}/mo</button>
+<section id="pricing" class="pricing">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Pricing</h2>
+      <p>Choose a plan from below</p>
+    </div>
+
+    <div class="row">
+
+      <div class="col-lg-4 col-md-6" *ngFor="let tier of tiers">
+        <div class="box">
+          <h3>{{tier['friendly']}}</h3>
+          <ul>
+            <li>Daily Drawdown: {{tier['dailyDrawdown']}}</li>
+            <li>{{tier['trailingMax']}}</li>
+            <li>Profit Target: {{tier['profitTarget']}}</li>
+            <li>{{tier['contractMax']}}</li>
+          </ul>
+          <h6>{{ tier['standardDescription'] }}</h6>
+          <div class="btn-wrap">
+            <button class="btn-buy" (click)="setSelectedTier(tier, 0)" data-bs-toggle="modal" data-bs-target="#stripeModal">Buy Standard Package for ${{ tier['standardPrice'] | number}}/Month</button>
+          </div>
+          <hr>
+          <h6>{{ tier['expressDescription'] }}</h6>
+          <div class="btn-wrap">
+            <button class="btn-buy" (click)="setSelectedTier(tier, 1)" data-bs-toggle="modal" data-bs-target="#stripeModal">Buy Express Package for ${{ tier['expressPrice'] | number}}/Month</button>
+          </div>
+        </div>
       </div>
     </div>
+
   </div>
-</div>
+</section><!-- End Pricing Section -->
 
 <!-- Modal -->
 <div class="modal fade" id="stripeModal" tabindex="-1" aria-labelledby="stripeModalLabel" aria-hidden="true">
@@ -27,51 +42,23 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="row ">
-          <div class="col-12 d-flex justify-content-center">
-            <h5>Whats Included in my Package ?</h5>
+        <section id="pricing" class="pricing">
+          <div class="col-12">
+            <div class="box">
+              <ul>
+                <li>Daily Drawdown: {{selectedTier['dailyDrawdown']}}</li>
+                <li>{{selectedTier['trailingMax']}}</li>
+                <li>Profit Target: {{selectedTier['profitTarget']}}</li>
+                <li>{{selectedTier['contractMax']}}</li>
+              </ul>
+              <h6>{{ selectedTier['standardDescription'] }}</h6>
+
+            </div>
           </div>
-          <ul class="list-unstyled mt-3 mb-4">
-            <li class="mt-2">{{selectedTier['dailyDrawdown']}}</li>
-            <li class="mt-2">{{selectedTier['trailingMax']}}</li>
-            <li class="mt-2">{{selectedTier['contractMax']}}</li>
-            <li class="mt-2">{{selectedTier['status'] == 'S' ? selectedTier['standardDescription'] : selectedTier['expressDescription']}}</li>
-          </ul>
-        </div>
+        </section>
         <div class="row">
           <div class="col-12">
             <h6>Payment Info</h6>
-          </div>
-          <div class="col-12">
-            <div class="row">
-              <div class="col-md-6 mb-4">
-                <div class="form-outline">
-                  <label class="form-label" for="form3Example1m">First name</label>
-                  <input type="text" id="form3Example1m" class="form-control form-control-md" [(ngModel)]="user['first']" />
-                </div>
-              </div>
-              <div class="col-md-6 mb-4">
-                <div class="form-outline">
-                  <label class="form-label" for="form3Example1n">Last name</label>
-                  <input type="text" id="form3Example1n" class="form-control form-control-md" [(ngModel)]="user['last']" />
-                </div>
-              </div>
-            </div>
-
-            <div class="form-outline mb-4">
-              <label class="form-label" for="form3Example58">Address</label>
-              <input type="text" id="form3Example58" class="form-control form-control-md" [(ngModel)]="user['address']" />
-            </div>
-
-            <div class="form-outline mb-4">
-              <label class="form-label" for="form3Example9">Phone Number</label>
-              <input type="text" id="form3Example9" class="form-control form-control-md" [(ngModel)]="user['phone']" />
-            </div>
-
-            <div class="form-outline mb-4">
-              <label class="form-label" for="form3Example90">Email</label>
-              <input type="text" id="form3Example90" class="form-control form-control-md" [(ngModel)]="user['email']" />
-            </div>
           </div>
           <div class="col-12">
             <form id="payment-form">
