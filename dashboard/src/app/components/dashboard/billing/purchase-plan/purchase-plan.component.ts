@@ -41,7 +41,7 @@ export class PurchasePlanComponent implements OnInit {
 
   ngOnInit(): void {
     this.configureStripe();
-    this._requests.getRequest("tiers").subscribe(res => {
+    this._requests.getRequest("tiers", this.user).subscribe(res => {
       if (res['status'] == 200) {
         this.tiers = res['message']
       }
@@ -141,7 +141,7 @@ export class PurchasePlanComponent implements OnInit {
       return;
     }
     const params = { user: this._state.user, affiliateCode: this.affiliateCode }
-    this._requests.postRequest("checkout/apply-discount", params).subscribe(res => {
+    this._requests.postRequest("checkout/apply-discount", params, this.user).subscribe(res => {
       if (res['status'] == 200) {
         this.discount = this.selectedTier['price'] * res['message'][0]['discount'];
         this.selectedTier['total'] = this.selectedTier['price'] - this.discount;
@@ -164,7 +164,7 @@ export class PurchasePlanComponent implements OnInit {
         result['purchase'] = this.selectedTier
         result['purchase']['price'] = result['purchase']['total']
         console.log(result)
-        this._requests.postRequest("checkout", result).subscribe(res => {
+        this._requests.postRequest("checkout", result, this.user).subscribe(res => {
           console.log(res)
         })
       }
@@ -181,7 +181,7 @@ export class PurchasePlanComponent implements OnInit {
       reset: this._state.user['ffn'] != null,
     }
 
-    this._requests.postRequest("user/purchase-membership", params).subscribe(res => {
+    this._requests.postRequest("user/purchase-membership", params, this.user).subscribe(res => {
       if (res['status'] == 200) {
         this._state.user['tier'] = tier['id'];
         this._state.user['friendly'] = tier['friendly'];

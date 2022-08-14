@@ -111,7 +111,7 @@ export class SignupComponent implements OnInit {
     this.user['phone'] = this.registerForm.value['phone'];
     this.user['username'] = this.registerForm.value['username'];
 
-    this._requests.postRequest("signup", this.user).subscribe(res => {
+    this._requests.postRequest("signup", this.user, this.user).subscribe(res => {
       if (res['status'] == 200) {
         this.router.navigateByUrl("/login");
       }

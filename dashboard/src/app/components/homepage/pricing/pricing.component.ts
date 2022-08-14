@@ -10,7 +10,7 @@ export class PricingComponent implements OnInit {
   constructor(private _requests: RequestsService) { }
 
   ngOnInit(): void {
-    this._requests.getRequest("tiers").subscribe(res => {
+    this._requests.getRequest("tiers", {}).subscribe(res => {
       if (res['status'] == 200) {
         this.tiers = res['message']
       }

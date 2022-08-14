@@ -11,15 +11,33 @@ export class RequestsService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  public postRequest(url, params) {
-    return this.http.post(this.url + url, params);
+  public postRequest(url, params, user) {
+    var headers;
+    if ('token' in user) {
+      headers = this.getHttpOptions(user);
+    }
+
+    return this.http.post(this.url + url, params, headers);
   }
 
-  public getRequest(url) {
-    return this.http.get(this.url + url);
+  public getRequest(url, user) {
+    var headers;
+    if ('token' in user) {
+      headers = this.getHttpOptions(user);
+    }
+
+    return this.http.get(this.url + url, headers);
   }
 
   public customPost(url, params) {
     return this.http.post(url, params);
+  }
+
+  public getHttpOptions(user) {
+    return {
+      headers: new HttpHeaders({
+        "Authorization": user['token']
+      })
+    }
   }
 }

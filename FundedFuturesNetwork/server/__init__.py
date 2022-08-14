@@ -1,9 +1,12 @@
 from flask import Flask
 from flask_cors import CORS, cross_origin
+import jwt
 from .db import DB
+
 
 def create_app():
     app = Flask(__name__)
+    app.config['SECRET_KEY'] = "004f2af45d3a4e161a7dd2d17fdae47f"
     cors = CORS(app)
 
     with app.app_context():

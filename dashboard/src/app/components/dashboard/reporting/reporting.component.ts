@@ -80,7 +80,7 @@ export class ReportingComponent implements OnInit {
   }
 
   public triggerResetMessage() {
-    this._requests.postRequest("user/rithmic/disable", { user: this.user }).subscribe(res => {
+    this._requests.postRequest("user/rithmic/disable", { user: this.user }, this.user).subscribe(res => {
 
 
       this.resetFlag = true;

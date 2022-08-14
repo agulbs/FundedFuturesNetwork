@@ -5,7 +5,7 @@ import { Observable, Subject, BehaviorSubject } from 'rxjs';
 })
 export class StateService {
 
-  public user;
+  public user = {};
   public userBehavoirSubject = new BehaviorSubject<any>({});
 
 
@@ -13,6 +13,9 @@ export class StateService {
 
   public setUser(user) {
     delete user['password']
+    if ('token' in this.user) {
+      user['token'] = this.user['token']
+    }
     this.user = user;
     this.userBehavoirSubject.next(this.user);
     localStorage.setItem('ffn', JSON.stringify(user))

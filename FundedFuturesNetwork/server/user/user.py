@@ -5,19 +5,26 @@ from flask import request
 from flask import make_response
 from pprint import pprint
 from server.rithmic import crud
+import jwt
+import datetime
+from server.utils import *
+from passlib.hash import pbkdf2_sha256 as sha256
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 user_bp = Blueprint("user_bp", __name__)
 
 @user_bp.route("/signup", methods=["POST"])
 def signup():
 	data = request.get_json(force=True)
-	pprint(data)
+	password = data['password']
+	data['password'] = generate_password_hash(password, method='sha256')
 
-	sql = """
-	INSERT INTO FundedFuturesNetwork.Users (first, last, address, city, state, country, postal, phone, email, password, username)
-	VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-	"""
 	with app.db() as db:
+		sql = """
+		INSERT INTO FundedFuturesNetwork.Users (first, last, address, city, state, country, postal, phone, email, password, username)
+		VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+		"""
 		commit = db.commit(sql, data)
 		sql = "INSERT INTO FundedFuturesNetwork.Subscriptions (username, tier) VALUES (%s, 0)"
 		params = { 'username': data['username'] }
@@ -35,18 +42,21 @@ def login():
 	data = request.get_json(force=True)
 	print(data)
 
-	sql = "SELECT * FROM FundedFuturesNetwork.Users WHERE username=%s and password=%s"
 
 	with app.db() as db:
-		user = db.query(sql, data)
+		sql = "SELECT * FROM FundedFuturesNetwork.Users WHERE username=%s"
+		user = db.query(sql, {'username': data['username']})
 
-		if len(user) > 0:
-			return jsonify({'message': "login", 'status': 200})
+		if len(user) > 0 and check_password_hash(user[0]['password'], data['password']):
+			payload = {'public_id' : user[0]['username'], 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=45)}
+			token = jwt.encode(payload, app.config['SECRET_KEY'], "HS256")
+			return jsonify({'message': token, 'status': 200})
 
 	return jsonify({'message': "Wrong username or password", 'status': 400})
 
 
 @user_bp.route("/user", methods=["POST"])
+@token_required
 def user():
 	data = request.get_json(force=True)
 	print(data)
@@ -83,6 +93,7 @@ def user():
 
 
 @user_bp.route("/user/update", methods=["POST"])
+@token_required
 def user_update():
 	data = request.get_json(force=True)
 
@@ -108,11 +119,12 @@ def user_update():
 
 
 @user_bp.route("/user/memberships", methods=["POST"])
+@token_required
 def user_memberships():
 	data = request.get_json(force=True)
 	sql = """
 	SELECT *
-	FROM Subscriptions S
+	FROM Transactions S
 	JOIN Tiers T ON T.id=S.tier
 	WHERE S.username=%s
 	ORDER BY S.systemDate DESC
@@ -127,6 +139,7 @@ def user_memberships():
 
 
 @user_bp.route("/user/invoices", methods=["POST"])
+@token_required
 def user_invoices():
 	data = request.get_json(force=True)
 
@@ -153,6 +166,7 @@ def user_invoices():
 
 
 @user_bp.route("/user/purchase-membership", methods=["POST"])
+@token_required
 def user_pucrchase_tier():
 	data = request.get_json(force=True)
 	sql = "INSERT INTO FundedFuturesNetwork.Subscriptions (username, tier) VALUES (%s, %s)"
@@ -169,6 +183,7 @@ def user_pucrchase_tier():
 
 
 @user_bp.route("/user/rithmic/disable", methods=["POST"])
+@token_required
 def user_rithmic_disable():
 	data = request.get_json(force=True)
 	crud.disable_account(data)

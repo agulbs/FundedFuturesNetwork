@@ -67,7 +67,7 @@ export class ProfileComponent implements OnInit {
     }
 
     if (flag) {
-      this._requests.postRequest("user/update", this.user).subscribe(res => {
+      this._requests.postRequest("user/update", this.user, this.user).subscribe(res => {
         console.log(res)
       })
     }

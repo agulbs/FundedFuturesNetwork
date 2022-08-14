@@ -23,7 +23,9 @@ export class InvoiceComponent implements OnInit {
 
 
   public getInvoices(user) {
-    this._requests.postRequest("user/invoices", { 'username': user['username'] }).subscribe(res => {
+    console.log(user)
+    this._requests.postRequest("user/invoices", { 'username': user['username'] }, user).subscribe(res => {
+      console.log(res)
       if (res['status'] == 200) {
         this.invoices = res['message'];
         console.log(this.invoices)

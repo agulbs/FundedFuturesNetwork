@@ -36,8 +36,11 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.value['password'],
     }
 
-    this._requests.postRequest("login", this.user).subscribe(res => {
+    this._requests.postRequest("login", this.user, this.user).subscribe(res => {
       if (res['status'] == 200) {
+        console.log(res)
+        this.user['token'] = res['message']
+        console.log(this.user)
         this._state.setUser(this.user);
         this.router.navigateByUrl("/dashboard");
       } else {

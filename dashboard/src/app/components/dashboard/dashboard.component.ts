@@ -13,26 +13,20 @@ export class DashboardComponent implements OnInit {
   public user;
 
   constructor(private _state: StateService, private _requests: RequestsService, ) {
-    this._state.userBehavoirSubject.subscribe(user => {
-      if (Object.keys(user).length == 0) { return; }
-    })
+
   }
 
   ngOnInit(): void {
-    var user = localStorage.getItem('ffn');
-
-    if (user) {
-      this.saveUser(JSON.parse(user));
-    } else {
-      alert("REROUTE")
-    }
+    this.getUserInfo()
   }
 
-  public saveUser(user) {
-    this._requests.postRequest("user", { 'user': user['username'] }).subscribe(res => {
+  public getUserInfo() {
+    console.log(this._state.user)
+    this._requests.postRequest("user", { 'user': this._state.user['username'] }, this._state.user).subscribe(res => {
       if (res['status'] == 200) {
-        this._state.setUser(res['message']);
-        this.user = res['message'];
+        this._state.setUser(res['message'])
+      } else {
+
       }
     })
   }

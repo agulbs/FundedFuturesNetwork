@@ -26,7 +26,8 @@ export class MembershipComponent implements OnInit {
   }
 
   public getMemberships() {
-    this._requests.postRequest("user/memberships", { username: this.user['username'] }).subscribe(res => {
+    this._requests.postRequest("user/memberships", { username: this.user['username'] }, this.user).subscribe(res => {
+      console.log(res)
       if (res['status'] == 200) {
         console.log(res)
         this.memberships = res['message'];
